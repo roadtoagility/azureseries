@@ -142,20 +142,14 @@ echo -e "\n$MainTextColor Configuring IIS $OutputTextColor"
 array=(myVM1 myVM2 myVM3)
 for vm in "${array[@]}"
 	do
-		az vm extension set \
-		--publisher Microsoft.Compute \
-		--version 1.8 \
-		--name CustomScriptExtension \
-		--vm-name $vm \
-		--resource-group $resourceGroup \
-		--settings '{"commandToExecute":"powershell Add-WindowsFeature Web-Server; powershell Add-Content -Path \"C:\\inetpub\\wwwroot\\Default.htm" -Value \$(\$env:computername)"}'
+	az vm extension set --publisher Microsoft.Compute --version 1.8 --name CustomScriptExtension --vm-name $vm --resource-group azureseries --settings '{"commandToExecute":"powershell Add-WindowsFeature Web-Server; powershell Add-Content -Path \"C:\\inetpub\\wwwroot\\Default.htm\" -Value $($env:computername)"}'
 done
 
 echo -e "\n$MainTextColor Test the load balancer $OutputTextColor"
 
 az network public-ip show \
     --resource-group $resourceGroup \
-    --name $projectAlias\PublicIP \
+    --name roadtestePublicIP \
     --query ipAddress \
     --output tsv
 
